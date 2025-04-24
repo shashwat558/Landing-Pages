@@ -54,24 +54,24 @@ export default function Particles() {
     // Animation loop
     function animate() {
       requestAnimationFrame(animate)
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      ctx?.clearRect(0, 0, canvas?.width ?? 0, canvas?.height ?? 0)
       
       for (let i = 0; i < particlesArray.length; i++) {
         const p = particlesArray[i]
         
         // Draw particle
-        ctx.beginPath()
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
-        ctx.fillStyle = p.color
-        ctx.fill()
+        ctx?.beginPath()
+        ctx?.arc(p.x, p.y, p.size, 0, Math.PI * 2)
+        if (ctx) ctx.fillStyle = p.color
+        ctx?.fill()
         
         // Move particle
         p.x += p.speedX
         p.y += p.speedY
         
         // Edge detection
-        if (p.x < 0 || p.x > canvas.width) p.speedX *= -1
-        if (p.y < 0 || p.y > canvas.height) p.speedY *= -1
+        if (canvas && (p.x < 0 || p.x > canvas.width)) p.speedX *= -1
+        if (canvas &&(p.y < 0 || p.y > canvas.height)) p.speedY *= -1
         
         // Connect particles
         for (let j = i; j < particlesArray.length; j++) {
@@ -81,14 +81,14 @@ export default function Particles() {
           const distance = Math.sqrt(dx * dx + dy * dy)
           
           if (distance < 100) {
-            ctx.beginPath()
-            ctx.strokeStyle = p.color
-            ctx.lineWidth = 0.2
-            ctx.globalAlpha = 1 - (distance / 100)
-            ctx.moveTo(p.x, p.y)
-            ctx.lineTo(p2.x, p2.y)
-            ctx.stroke()
-            ctx.globalAlpha = 1
+            ctx?.beginPath()
+            if(ctx)ctx.strokeStyle = p.color
+            if(ctx)ctx.lineWidth = 0.2
+            if(ctx)ctx.globalAlpha = 1 - (distance / 100)
+            ctx?.moveTo(p.x, p.y)
+            ctx?.lineTo(p2.x, p2.y)
+            ctx?.stroke()
+            if(ctx)ctx.globalAlpha = 1
           }
         }
       }
